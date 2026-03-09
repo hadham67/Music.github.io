@@ -46,7 +46,8 @@ void draw() {
   // 2. MUSIC TITLE + SONG WRITER
   float titleY = photoY + 220 + margin;
   rect(leftMargin, titleY, 450, 110);
-  fill(0);
+  noFill();
+  stroke(0);
   textSize(20);
   text("music title", leftMargin + 225, titleY + 55);
   

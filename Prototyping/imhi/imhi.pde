@@ -1,10 +1,10 @@
 println("hi world");
 //
-print("hi");
+print("idk hi");
 print("world");
 //
-print("hi");
+print("whathi");
 print("\tworld");
 //
-print("hi");
-print("\nworld");
+print("to hi");
+print("\nsay world");
