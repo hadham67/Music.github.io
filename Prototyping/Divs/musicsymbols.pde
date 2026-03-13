@@ -1,4 +1,7 @@
 
+// STATIC MODE MUSIC PLAYER GUI
+
+// window size
 size(1152, 648);
 background(255);
 
