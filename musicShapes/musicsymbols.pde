@@ -39,7 +39,7 @@ for (int i = 0; i < btnCount; i++) {
   rect(currentBtnX, btnBaseY, btnW, btnH);
 
   fill(0);
-  textSize(18); 
+  textSize(20); 
   
   String label = "";
   if (i == 0) label = "||";      
