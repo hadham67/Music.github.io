@@ -10,8 +10,6 @@ int paperWidth = 279; // Landscape 8.5x11 inches in mm
 int paperHeight = 216; 
 
 // =======================================================
-// DIV Variable Declarations
-// =======================================================
 float exitBtnX, exitBtnY, exitBtnW, exitBtnH;
 
 // Row 2: Photo & Lyrics

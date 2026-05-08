@@ -1,63 +1,69 @@
-/* Music App, Final Project
-*/
+/* Music App, Final Project */
 
-// Minim Library
+// Import Minim Library (if needed in the future)
 
-// =======================================================
+
 // Global Variables
-// =======================================================
+int appWidth, appHeight;
+int paperWidth = 279; // Landscape 8.5x11 inches in mm
+int paperHeight = 216;
 
-// Canvas & Ratio Variables
-float appWidth, appHeight;
-float paperWidth = 278;  // Estimated total width based on your UI math
-float paperHeight = 200; // Estimated total height based on your UI math
-
-// Row 1: Exit Button
 float exitBtnX, exitBtnY, exitBtnW, exitBtnH;
-
-// Row 2: Photo & Lyrics
 float photoX, photoY, photoW, photoH;
 float lyricsX, lyricsY, lyricsW, lyricsH;
-
-// Row 3: Title & Song Writer
 float titleX, titleY, titleW, titleH;
 float writerX, writerY, writerW, writerH;
-
-// Row 4: Progress Bar 
 float progressX, progressY, progressW, progressH;
-
-// Row 5: Bottom Buttons
 float btnBaseX, btnBaseY, btnTotalW, btnW, btnH;
 
-// =======================================================
-// Setup
-// =======================================================
-fullScreen();
-println(displayWidth, displayHeight);
-int appWidth = displayWidth;
-int appHeight = displayHeight;
 
-int paperWidth = 279; // Landscape 8.5x11 inches in mm
-int paperHeight = 216; 
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.effects.*;
+import ddf.minim.signals.*;
+import ddf.minim.spi.*;
+import ddf.minim.ugens.*;
 
-  // 1) Exit Button (Perfect Square, but smaller!)
-  exitBtnH = appHeight * 15 / paperHeight; 
-  exitBtnW = exitBtnH;                     
-  exitBtnX = appWidth - exitBtnW;          
-  exitBtnY = 0;                            
 
-  // 2) Photo Album & Lyrics Boxes 
-  photoX = appWidth * 14 / paperWidth; 
+
+
+void setup() {
+  // Screen Setup
+  fullScreen();
+  appWidth = displayWidth;
+  appHeight = displayHeight;
+
+  // Load the bold font
+
+
+  // Initialize UI Elements
+  initializeUI();
+
+  // Draw UI
+  drawUI();
+
+  println("All boxes drawn successfully!");
+}
+
+void initializeUI() {
+  // Exit Button
+  exitBtnH = appHeight * 15 / paperHeight;
+  exitBtnW = exitBtnH;
+  exitBtnX = appWidth - exitBtnW;
+  exitBtnY = 0;
+
+  // Photo Album & Lyrics
+  photoX = appWidth * 14 / paperWidth;
   photoY = appHeight * 20 / paperHeight;
-  photoW = appWidth * 120 / paperWidth; 
+  photoW = appWidth * 120 / paperWidth;
   photoH = appHeight * 88 / paperHeight;
 
-  lyricsX = appWidth * 144 / paperWidth; 
-  lyricsY = appHeight * 20 / paperHeight; 
-  lyricsW = appWidth * 120 / paperWidth; 
+  lyricsX = appWidth * 144 / paperWidth;
+  lyricsY = appHeight * 20 / paperHeight;
+  lyricsW = appWidth * 120 / paperWidth;
   lyricsH = appHeight * 88 / paperHeight;
 
-  // 3) Title + Song Writer Row
+  // Title & Song Writer
   titleX = appWidth * 14 / paperWidth;
   titleY = appHeight * 120 / paperHeight;
   titleW = appWidth * 120 / paperWidth;
@@ -68,111 +74,110 @@ int paperHeight = 216;
   writerW = appWidth * 120 / paperWidth;
   writerH = appHeight * 20 / paperHeight;
 
-  // 4) Progress Bar 
+  // Progress Bar
   progressX = appWidth * 14 / paperWidth;
   progressY = appHeight * 150 / paperHeight;
-  progressW = appWidth * 250 / paperWidth; 
+  progressW = appWidth * 250 / paperWidth;
   progressH = appHeight * 10 / paperHeight;
 
-  // 5) Bottom Bar 9 Buttons
+  // Bottom Bar Buttons
   btnBaseX = appWidth * 14 / paperWidth;
   btnBaseY = appHeight * 175 / paperHeight;
-  btnTotalW = appWidth * 250 / paperWidth; 
-  btnW = btnTotalW / 9; 
+  btnTotalW = appWidth * 250 / paperWidth;
+  btnW = btnTotalW / 9;
   btnH = appHeight * 25 / paperHeight;
-  
-  println("Setup complete, variables initialized!");
-} // End Setup
+}
 
-// =======================================================
-// Draw
-// =======================================================
-void draw() {
+void drawUI() {
   background(255);
   stroke(0);
   strokeWeight(2);
   noFill();
   textAlign(CENTER, CENTER);
 
-  // --- Draw Exit Button ---
+  // Set the bold font globally
+
+
+  // Exit Button
   rect(exitBtnX, exitBtnY, exitBtnW, exitBtnH);
-  fill(0); textSize(16); 
-  text("X", exitBtnX + exitBtnW/2, exitBtnY + exitBtnH/2);
+  fill(0);
+  textSize(16);
+  text("X", exitBtnX + exitBtnW / 2, exitBtnY + exitBtnH / 2);
   noFill();
 
-  // --- Draw Photo Album ---
+  // Photo Album
   rect(photoX, photoY, photoW, photoH);
-  fill(0); textSize(20); 
-  text("photo album", photoX + photoW/2, photoY + photoH/2);
+  fill(0);
+  textSize(20);
+  text("photo album", photoX + photoW / 2, photoY + photoH / 2);
   noFill();
 
-  // --- Draw Lyrics Box & Fake Highlight ---
+  // Lyrics Box
   rect(lyricsX, lyricsY, lyricsW, lyricsH);
-
-  fill(150); 
+  fill(150);
   textSize(16);
-  text("Here are the lyrics", lyricsX + lyricsW/2, lyricsY + 20);
-
-  fill(0, 100, 255); 
-  textSize(22); 
-  text("Scrolling right now!", lyricsX + lyricsW/2, lyricsY + 44); 
-
-  fill(150); 
+  text("Here are the lyrics", lyricsX + lyricsW / 2, lyricsY + 20);
+  fill(0, 100, 255);
+  textSize(22);
+  text("Scrolling right now!", lyricsX + lyricsW / 2, lyricsY + 44);
+  fill(150);
   textSize(16);
-  text("Endlessly scrolling...", lyricsX + lyricsW/2, lyricsY + 68);
+  text("Endlessly scrolling...", lyricsX + lyricsW / 2, lyricsY + 68);
   noFill();
 
-  // --- Draw Music Title & Writer ---
+  // Music Title & Writer
   rect(titleX, titleY, titleW, titleH);
-  fill(0); textSize(20);
-  text("music title", titleX + titleW/2, titleY + titleH/2);
+  fill(0);
+  textSize(20);
+  text("music title", titleX + titleW / 2, titleY + titleH / 2);
   noFill();
 
   rect(writerX, writerY, writerW, writerH);
-  fill(0); textSize(18); 
-  text("song writer & features", writerX + writerW/2, writerY + writerH/2);
+  fill(0);
+  textSize(18);
+  text("song writer & features", writerX + writerW / 2, writerY + writerH / 2);
   noFill();
 
-  // --- Draw Progress Bar ---
+  // Progress Bar
   rect(progressX, progressY, progressW, progressH);
-  fill(0); textSize(14);
-  text("progress bar", progressX + progressW/2, progressY + progressH/2);
+  fill(0);
+  textSize(14);
+  text("progress bar", progressX + progressW / 2, progressY + progressH / 2);
   noFill();
 
-  // --- Draw 9 Bottom Buttons ---
-  int btnCount = 9;
-  for (int i = 0; i < btnCount; i++) {
+  // Bottom Bar Buttons
+  for (int i = 0; i < 9; i++) {
     float currentBtnX = btnBaseX + (i * btnW);
     rect(currentBtnX, btnBaseY, btnW, btnH);
 
     fill(0);
-    textSize(14); 
-    
+    textSize(18);
+
     String label = "";
-    if (i == 0) label = "pause";
-    else if (i == 1) label = "play";
-    else if (i == 2) label = "shuffle"; 
-    else if (i == 3) label = "skip 10s"; 
-    else if (i == 4) label = "rev 10s";
-    else if (i == 5) label = "next";
-    else if (i == 6) label = "prev";
+    if (i == 0) label = "||";
+    else if (i == 1) label = ">";
+    else if (i == 2) label = "shfl";
+    else if (i == 3) label = ">>";
+    else if (i == 4) label = "<<";
+    else if (i == 5) label = ">|";
+    else if (i == 6) label = "|<";
     else if (i == 7) {
-      label = "save\nsong"; 
-      textSize(11); 
-    }
-    else if (i == 8) {
-      label = "infinite\nshuffle"; 
-      textSize(11); 
+      label = "<3";
+      fill(255, 0, 0);
+    } else if (i == 8) {
+      label = "loop";
     }
 
-    text(label, currentBtnX + btnW/2, btnBaseY + btnH/2);
+    text(label, currentBtnX + btnW / 2, btnBaseY + btnH / 2);
     noFill();
   }
-} // End Draw 
+}
 
-// =======================================================
-// Interactions
-// =======================================================
-void mousePressed() {} // End Mouse Pressed
+void draw() {
+}
 
-void keyPressed() {} // End Key Pressed
+void mousePressed() {
+}
+
+void keyPressed() {
+}
