@@ -2,12 +2,12 @@
 
 // Import Minim Library (if needed in the future)
 
-
 // Global Variables
 int appWidth, appHeight;
-int paperWidth = 279; // Landscape 8.5x11 inches in mm
-int paperHeight = 216;
+int paperWidth = 279; // Paper width in mm
+int paperHeight = 216; // Paper height in mm
 
+// UI Element Positions and Sizes
 float exitBtnX, exitBtnY, exitBtnW, exitBtnH;
 float photoX, photoY, photoW, photoH;
 float lyricsX, lyricsY, lyricsW, lyricsH;
@@ -16,36 +16,12 @@ float writerX, writerY, writerW, writerH;
 float progressX, progressY, progressW, progressH;
 float btnBaseX, btnBaseY, btnTotalW, btnW, btnH;
 
-
-import ddf.minim.*;
-import ddf.minim.analysis.*;
-import ddf.minim.effects.*;
-import ddf.minim.signals.*;
-import ddf.minim.spi.*;
-import ddf.minim.ugens.*;
-
-
-
-
 void setup() {
-  // Screen Setup
+  // Set up the screen
   fullScreen();
   appWidth = displayWidth;
   appHeight = displayHeight;
 
-  // Load the bold font
-
-
-  // Initialize UI Elements
-  initializeUI();
-
-  // Draw UI
-  drawUI();
-
-  println("All boxes drawn successfully!");
-}
-
-void initializeUI() {
   // Exit Button
   exitBtnH = appHeight * 15 / paperHeight;
   exitBtnW = exitBtnH;
@@ -86,33 +62,29 @@ void initializeUI() {
   btnTotalW = appWidth * 250 / paperWidth;
   btnW = btnTotalW / 9;
   btnH = appHeight * 25 / paperHeight;
-}
 
-void drawUI() {
+  // Draw the UI
   background(255);
   stroke(0);
   strokeWeight(2);
   noFill();
   textAlign(CENTER, CENTER);
 
-  // Set the bold font globally
-
-
-  // Exit Button
+  // Draw Exit Button
   rect(exitBtnX, exitBtnY, exitBtnW, exitBtnH);
   fill(0);
   textSize(16);
   text("X", exitBtnX + exitBtnW / 2, exitBtnY + exitBtnH / 2);
   noFill();
 
-  // Photo Album
+  // Draw Photo Album
   rect(photoX, photoY, photoW, photoH);
   fill(0);
   textSize(20);
-  text("photo album", photoX + photoW / 2, photoY + photoH / 2);
+  text("Photo Album", photoX + photoW / 2, photoY + photoH / 2);
   noFill();
 
-  // Lyrics Box
+  // Draw Lyrics Box
   rect(lyricsX, lyricsY, lyricsW, lyricsH);
   fill(150);
   textSize(16);
@@ -125,52 +97,59 @@ void drawUI() {
   text("Endlessly scrolling...", lyricsX + lyricsW / 2, lyricsY + 68);
   noFill();
 
-  // Music Title & Writer
+  // Draw Music Title & Writer
   rect(titleX, titleY, titleW, titleH);
   fill(0);
   textSize(20);
-  text("music title", titleX + titleW / 2, titleY + titleH / 2);
+  text("Music Title", titleX + titleW / 2, titleY + titleH / 2);
   noFill();
 
   rect(writerX, writerY, writerW, writerH);
   fill(0);
   textSize(18);
-  text("song writer & features", writerX + writerW / 2, writerY + writerH / 2);
+  text("Song Writer & Features", writerX + writerW / 2, writerY + writerH / 2);
   noFill();
 
-  // Progress Bar
+  // Draw Progress Bar
   rect(progressX, progressY, progressW, progressH);
   fill(0);
   textSize(14);
-  text("progress bar", progressX + progressW / 2, progressY + progressH / 2);
+  text("Progress Bar", progressX + progressW / 2, progressY + progressH / 2);
   noFill();
 
-  // Bottom Bar Buttons
+  // Draw Bottom Bar Buttons
   for (int i = 0; i < 9; i++) {
     float currentBtnX = btnBaseX + (i * btnW);
     rect(currentBtnX, btnBaseY, btnW, btnH);
 
-    fill(0);
-    textSize(18);
+    PFont symbolFont = createFont("Arial Unicode MS", 16);
+    textFont(symbolFont);
+
+    fill(0); // Default text color to black
+    textSize(16);
 
     String label = "";
-    if (i == 0) label = "||";
-    else if (i == 1) label = ">";
-    else if (i == 2) label = "shfl";
-    else if (i == 3) label = ">>";
-    else if (i == 4) label = "<<";
-    else if (i == 5) label = ">|";
-    else if (i == 6) label = "|<";
-    else if (i == 7) {
-      label = "<3";
-      fill(255, 0, 0);
-    } else if (i == 8) {
-      label = "loop";
+
+    // Assign labels to buttons
+    if (i == 0) label = "🔄"; // Loop
+    else if (i == 1) label = "+10s"; // Skip 10 seconds
+    else if (i == 2) label = "-10s"; // Rewind 10 seconds
+    else if (i == 3) label = "||"; // Pause
+    else if (i == 4) label = "▶"; // Play
+    else if (i == 5) label = "■"; // Stop
+    else if (i == 6) label = "⏭"; // Next Song
+    else if (i == 7) label = "⏮"; // Previous Song
+    else if (i == 8) {
+      label = "❤"; // Heart
+      fill(255, 0, 0); // Make the heart red
     }
 
+    // Draw the label
     text(label, currentBtnX + btnW / 2, btnBaseY + btnH / 2);
-    noFill();
+    noFill(); // Reset fill for the next button
   }
+
+  println("All boxes drawn successfully!");
 }
 
 void draw() {
