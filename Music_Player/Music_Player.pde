@@ -7,12 +7,15 @@ import ddf.minim.signals.*;
 import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
 
-// Global Variables
+// =======================================================
+// GLOBAL VARIABLES
+// =======================================================
+
 int appWidth, appHeight;
 int paperWidth = 279;
 int paperHeight = 216;
 
-// Music Variables
+// MUSIC
 Minim minim;
 
 int numberOfSongs = 3;
@@ -24,7 +27,10 @@ AudioPlayer[] soundEffects = new AudioPlayer[numberOfSoundEffect];
 
 int currentSong = 0;
 
-// UI Element Positions and Sizes
+// IMAGE
+PImage image1;
+
+// UI ELEMENTS
 float exitBtnX, exitBtnY, exitBtnW, exitBtnH;
 float photoX, photoY, photoW, photoH;
 float lyricsX, lyricsY, lyricsW, lyricsH;
@@ -33,6 +39,10 @@ float writerX, writerY, writerW, writerH;
 float progressX, progressY, progressW, progressH;
 float btnBaseX, btnBaseY, btnTotalW, btnW, btnH;
 
+// =======================================================
+// SETUP
+// =======================================================
+
 void setup() {
 
   fullScreen();
@@ -40,68 +50,55 @@ void setup() {
   appWidth = displayWidth;
   appHeight = displayHeight;
 
-  // Exit Button
+  // UI layout
   exitBtnH = appHeight * 15 / paperHeight;
   exitBtnW = exitBtnH;
   exitBtnX = appWidth - exitBtnW;
   exitBtnY = 0;
 
-  // Photo Album
   photoX = appWidth * 14 / paperWidth;
   photoY = appHeight * 20 / paperHeight;
   photoW = appWidth * 120 / paperWidth;
   photoH = appHeight * 88 / paperHeight;
 
-  // Lyrics
   lyricsX = appWidth * 144 / paperWidth;
   lyricsY = appHeight * 20 / paperHeight;
   lyricsW = appWidth * 120 / paperWidth;
   lyricsH = appHeight * 88 / paperHeight;
 
-  // Title
   titleX = appWidth * 14 / paperWidth;
   titleY = appHeight * 120 / paperHeight;
   titleW = appWidth * 120 / paperWidth;
   titleH = appHeight * 20 / paperHeight;
 
-  // Writer
   writerX = appWidth * 144 / paperWidth;
   writerY = appHeight * 120 / paperHeight;
   writerW = appWidth * 120 / paperWidth;
   writerH = appHeight * 20 / paperHeight;
 
-  // Progress Bar
   progressX = appWidth * 14 / paperWidth;
   progressY = appHeight * 150 / paperHeight;
   progressW = appWidth * 250 / paperWidth;
   progressH = appHeight * 10 / paperHeight;
 
-  // Bottom Buttons
   btnBaseX = appWidth * 14 / paperWidth;
   btnBaseY = appHeight * 175 / paperHeight;
   btnTotalW = appWidth * 250 / paperWidth;
   btnW = btnTotalW / 9;
   btnH = appHeight * 25 / paperHeight;
 
-  // =========================
-  // MUSIC SETUP
-  // =========================
-
+  // MUSIC
   minim = new Minim(this);
 
-  String[] songName = new String[numberOfSongs];
-
-  songName[0] = "Eureka.mp3";
-  songName[1] = "Ghost_Walk.mp3";
-  songName[2] = "Start_Your_Engines.mp3";
+  String[] songName = {
+    "Eureka.mp3",
+    "Ghost_Walk.mp3",
+    "Start_Your_Engines.mp3"
+  };
 
   for (int i = 0; i < numberOfSongs; i++) {
-
     playList[i] = minim.loadFile(songName[i]);
-
-    if (playList[i] == null) {
-      println("Could not find: " + songName[i]);
-    } else {
+    if (playList[i] != null) {
       playListMetaData[i] = playList[i].getMetaData();
     }
   }
@@ -112,8 +109,13 @@ void setup() {
     playList[currentSong].play();
   }
 
-  println("All boxes drawn successfully!");
+  // IMAGE
+  image1 = loadImage("weeknd.jpg");
 }
+
+// =======================================================
+// DRAW
+// =======================================================
 
 void draw() {
 
@@ -124,211 +126,186 @@ void draw() {
   noFill();
   textAlign(CENTER, CENTER);
 
-  // Exit Button
+  // EXIT
   rect(exitBtnX, exitBtnY, exitBtnW, exitBtnH);
-
   fill(0);
-  textSize(16);
   text("X", exitBtnX + exitBtnW/2, exitBtnY + exitBtnH/2);
   noFill();
 
-  // Photo Album
+  // IMAGE
   rect(photoX, photoY, photoW, photoH);
+  if (image1 != null) {
+    image(image1, photoX, photoY, photoW, photoH);
+  }
 
-  fill(0);
-  textSize(20);
-  text("Photo Album", photoX + photoW/2, photoY + photoH/2);
-  noFill();
-
-  // Lyrics Box
+  // LYRICS
   rect(lyricsX, lyricsY, lyricsW, lyricsH);
+  text("Lyrics Box", lyricsX + lyricsW/2, lyricsY + lyricsH/2);
 
-  fill(150);
-  textSize(16);
-  text("Here are the lyrics", lyricsX + lyricsW/2, lyricsY + 20);
-
-  fill(0, 100, 255);
-  textSize(22);
-  text("Scrolling right now!", lyricsX + lyricsW/2, lyricsY + 44);
-
-  fill(150);
-  textSize(16);
-  text("Endlessly scrolling...", lyricsX + lyricsW/2, lyricsY + 68);
-  noFill();
-
-  // Music Title
+  // TITLE
   rect(titleX, titleY, titleW, titleH);
-
-  fill(0);
-  textSize(20);
-
   if (playListMetaData[currentSong] != null) {
     text(playListMetaData[currentSong].title(),
-      titleX + titleW/2,
-      titleY + titleH/2);
-  } else {
-    text("Music Title",
-      titleX + titleW/2,
-      titleY + titleH/2);
+      titleX + titleW/2, titleY + titleH/2);
   }
 
-  noFill();
-
-  // Writer Box
+  // WRITER
   rect(writerX, writerY, writerW, writerH);
-
-  fill(0);
-
   if (playListMetaData[currentSong] != null) {
     text(playListMetaData[currentSong].author(),
-      writerX + writerW/2,
-      writerY + writerH/2);
-  } else {
-    text("Song Writer & Features",
-      writerX + writerW/2,
-      writerY + writerH/2);
+      writerX + writerW/2, writerY + writerH/2);
   }
 
-  noFill();
-
-  // Progress Bar
+  // PROGRESS BAR
   rect(progressX, progressY, progressW, progressH);
 
   if (playList[currentSong] != null) {
+    float p = map(playList[currentSong].position(),
+      0, playList[currentSong].length(),
+      0, progressW);
 
-    float progress =
-      map(playList[currentSong].position(),
-      0,
-      playList[currentSong].length(),
-      0,
-      progressW);
-
-    fill(0, 200, 0);
-    rect(progressX, progressY, progress, progressH);
-    noFill();
+    rect(progressX, progressY, p, progressH);
   }
 
-  // Bottom Buttons
+  // =======================================================
+  // ICON BUTTONS (FIXED - NO BLACK BOXES)
+  // =======================================================
+
   for (int i = 0; i < 9; i++) {
 
-    float currentBtnX = btnBaseX + (i * btnW);
+    float x = btnBaseX + i * btnW;
 
-    rect(currentBtnX, btnBaseY, btnW, btnH);
+    rect(x, btnBaseY, btnW, btnH);
 
-    PFont symbolFont = createFont("Arial Unicode MS", 16);
-    textFont(symbolFont);
+    float cx = x + btnW/2;
+    float cy = btnBaseY + btnH/2;
 
+    stroke(0);
+    strokeWeight(2);
     fill(0);
-    textSize(16);
 
-    String label = "";
-
-    if (i == 0) label = "🔄";
-    else if (i == 1) label = "+10s";
-    else if (i == 2) label = "-10s";
-    else if (i == 3) label = "||";
-    else if (i == 4) label = "▶";
-    else if (i == 5) label = "■";
-    else if (i == 6) label = "⏭";
-    else if (i == 7) label = "⏮";
-    else if (i == 8) {
-      label = "❤";
-      fill(255, 0, 0);
+    if (i == 0) {
+      noFill();
+      arc(cx, cy, btnW*0.5, btnW*0.5, PI/4, TWO_PI);
+      line(cx + 10, cy - 5, cx + 15, cy - 10);
     }
 
-    text(label,
-      currentBtnX + btnW/2,
-      btnBaseY + btnH/2);
+    else if (i == 1) {
+      line(cx - 10, cy, cx + 10, cy);
+      line(cx, cy - 10, cx, cy + 10);
+      rect(cx + 8, cy - 10, 3, 20);
+    }
 
-    noFill();
+    else if (i == 2) {
+      line(cx - 10, cy, cx + 10, cy);
+      rect(cx - 11, cy - 10, 3, 20);
+    }
+
+    else if (i == 3) {
+      rect(cx - 8, cy - 10, 5, 20);
+      rect(cx + 3, cy - 10, 5, 20);
+    }
+
+    else if (i == 4) {
+      triangle(cx - 8, cy - 10, cx - 8, cy + 10, cx + 12, cy);
+    }
+
+    else if (i == 5) {
+      rect(cx - 10, cy - 10, 20, 20);
+    }
+
+    else if (i == 6) {
+      triangle(cx - 12, cy - 10, cx - 12, cy + 10, cx + 2, cy);
+      rect(cx + 6, cy - 10, 3, 20);
+    }
+
+    else if (i == 7) {
+      triangle(cx + 12, cy - 10, cx + 12, cy + 10, cx - 2, cy);
+      rect(cx - 9, cy - 10, 3, 20);
+    }
+
+    else if (i == 8) {
+      beginShape();
+      vertex(cx, cy + 8);
+      bezierVertex(cx - 10, cy - 5, cx - 8, cy - 12, cx, cy - 3);
+      bezierVertex(cx + 8, cy - 12, cx + 10, cy - 5, cx, cy + 8);
+      endShape(CLOSE);
+    }
   }
 }
+
+// =======================================================
+// MOUSE CONTROLS
+// =======================================================
 
 void mousePressed() {
-}
 
-void keyPressed() {
-
-  if (key == 'P' || key == 'p')
-    playList[currentSong].loop(0);
-
-  if (key == 'O' || key == 'o') {
-
-    if (playList[currentSong].isPlaying()) {
-      playList[currentSong].pause();
-    } else {
-      playList[currentSong].play();
-    }
-  }
-
-  if (key == 'S' || key == 's') {
-
-    if (playList[currentSong].isPlaying()) {
-      playList[currentSong].pause();
-    } else {
-      playList[currentSong].rewind();
-    }
-  }
-
-  if (key == 'L' || key == 'l')
-    playList[currentSong].loop(1);
-
-  if (key == 'K' || key == 'k')
-    playList[currentSong].loop();
-
-  if (key == 'F' || key == 'f')
-    playList[currentSong].skip(10000);
-
-  if (key == 'R' || key == 'r')
-    playList[currentSong].skip(-10000);
-
-  if (key == 'W' || key == 'w') {
-
-    if (playList[currentSong].isMuted()) {
-      playList[currentSong].unmute();
-    } else {
-      playList[currentSong].mute();
-    }
-  }
-
-  if (key == 'N' || key == 'n') {
-
-    playList[currentSong].pause();
-    playList[currentSong].rewind();
-
-    if (currentSong == numberOfSongs - 1) {
-      currentSong = 0;
-    } else {
-      currentSong++;
-    }
-
-    playList[currentSong].play();
-  }
-
-  if (key == 'Y' || key == 'y') {
-
-    playList[currentSong].pause();
-    playList[currentSong].rewind();
-
-    currentSong = int(random(numberOfSongs));
-
-    playList[currentSong].play();
-  }
-
-  if (key == 'Q' || key == 'q')
+  if (mouseX > exitBtnX && mouseX < exitBtnX + exitBtnW &&
+      mouseY > exitBtnY && mouseY < exitBtnY + exitBtnH) {
     exit();
+  }
+
+  for (int i = 0; i < 9; i++) {
+
+    float x = btnBaseX + i * btnW;
+
+    if (mouseX > x && mouseX < x + btnW &&
+        mouseY > btnBaseY && mouseY < btnBaseY + btnH) {
+
+      if (playList[currentSong] == null) return;
+
+      if (i == 0) playList[currentSong].loop();
+      else if (i == 1) playList[currentSong].skip(10000);
+      else if (i == 2) playList[currentSong].skip(-10000);
+
+      else if (i == 3) {
+        if (playList[currentSong].isPlaying())
+          playList[currentSong].pause();
+        else
+          playList[currentSong].play();
+      }
+
+      else if (i == 4) playList[currentSong].play();
+
+      else if (i == 5) {
+        playList[currentSong].pause();
+        playList[currentSong].rewind();
+      }
+
+      else if (i == 6) {
+        playList[currentSong].pause();
+        playList[currentSong].rewind();
+        currentSong++;
+        if (currentSong >= numberOfSongs) currentSong = 0;
+        playList[currentSong].play();
+      }
+
+      else if (i == 7) {
+        playList[currentSong].pause();
+        playList[currentSong].rewind();
+        currentSong--;
+        if (currentSong < 0) currentSong = numberOfSongs - 1;
+        playList[currentSong].play();
+      }
+
+      else if (i == 8) {
+        if (soundEffects[0] != null) {
+          soundEffects[0].rewind();
+          soundEffects[0].play();
+        }
+      }
+    }
+  }
 }
+
+// =======================================================
+// STOP
+// =======================================================
 
 void stop() {
-
   for (int i = 0; i < numberOfSongs; i++) {
-
-    if (playList[i] != null) {
-      playList[i].close();
-    }
+    if (playList[i] != null) playList[i].close();
   }
-
   minim.stop();
-
   super.stop();
 }
