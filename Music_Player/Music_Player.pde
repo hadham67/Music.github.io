@@ -91,9 +91,9 @@ void setup() {
   minim = new Minim(this);
 
   String[] songName = {
-    "Eureka.mp3",
-    "Ghost_Walk.mp3",
-    "Start_Your_Engines.mp3"
+    "Party Monster.mp3",
+    "Headlines.mp3",
+    "Highest In The Room.mp3"
   };
 
   for (int i = 0; i < numberOfSongs; i++) {
@@ -167,23 +167,32 @@ fill(0); // reset text color
   }
 
   // LYRICS
-  rect(lyricsX, lyricsY, lyricsW, lyricsH);
-  text("Lyrics Box", lyricsX + lyricsW/2, lyricsY + lyricsH/2);
+ rect(lyricsX, lyricsY, lyricsW, lyricsH);
+fill(255);
+text("Lyrics Box", lyricsX + lyricsW/2, lyricsY + lyricsH/2);
 
-  // TITLE
-  rect(titleX, titleY, titleW, titleH);
-  if (playListMetaData[currentSong] != null) {
-    text(playListMetaData[currentSong].title(),
-      titleX + titleW/2, titleY + titleH/2);
-  }
+// TITLE
+noFill();
+stroke(255);
+rect(titleX, titleY, titleW, titleH);
 
-  // WRITER
-  rect(writerX, writerY, writerW, writerH);
-  if (playListMetaData[currentSong] != null) {
-    text(playListMetaData[currentSong].author(),
-      writerX + writerW/2, writerY + writerH/2);
-  }
+fill(255);
+if (playListMetaData[currentSong] != null) {
+  text(playListMetaData[currentSong].title(),
+       titleX + titleW/2,
+       titleY + titleH/2);
+}
+// WRITER
+noFill();
+stroke(255);
+rect(writerX, writerY, writerW, writerH);
 
+fill(255);
+if (playListMetaData[currentSong] != null) {
+  text(playListMetaData[currentSong].author(),
+       writerX + writerW/2,
+       writerY + writerH/2);
+}
   // PROGRESS BAR
 stroke(255);
 noFill();
@@ -245,16 +254,18 @@ if (playList[currentSong] != null) {
   }
 
   textSize(32);
-  if (i == 0) text("loop", x+btnW/2, btnBaseY+btnH/2);
-  else if (i == 1) text("<<", x+btnW/2, btnBaseY+btnH/2);
-  else if (i == 2) text(">>", x+btnW/2, btnBaseY+btnH/2);
-  else if (i == 3) text("||", x+btnW/2, btnBaseY+btnH/2);
-  else if (i == 4) text(">", x+btnW/2, btnBaseY+btnH/2);
-  else if (i == 5) text("[]", x+btnW/2, btnBaseY+btnH/2);
-  else if (i == 6) text("|<", x+btnW/2, btnBaseY+btnH/2);
-  else if (i == 7) text(">|", x+btnW/2, btnBaseY+btnH/2);
-  else if (i == 8) text("<3", x+btnW/2, btnBaseY+btnH/2);
-
+ if (i == 0) text("SAVE", x+btnW/2, btnBaseY+btnH/2);
+else if (i == 1) text(">>", x+btnW/2, btnBaseY+btnH/2);   // +10
+else if (i == 2) text("<<", x+btnW/2, btnBaseY+btnH/2);   // -10
+else if (i == 3) text("||", x+btnW/2, btnBaseY+btnH/2);   // Pause
+else if (i == 4) text(">", x+btnW/2, btnBaseY+btnH/2);    // Play
+else if (i == 5) text("loop", x+btnW/2, btnBaseY+btnH/2);    // Loop
+else if (i == 6) text(">|", x+btnW/2, btnBaseY+btnH/2);   // Next
+else if (i == 7) text("|<", x+btnW/2, btnBaseY+btnH/2);   // Previous
+else if (i == 8) {
+  fill(255, 0, 0);
+  text("<3", x+btnW/2, btnBaseY+btnH/2);
+}
   noFill();
 }
   
@@ -279,15 +290,16 @@ void mousePressed() {
 
       if (playList[currentSong] == null) return;
 
-      if (i == 0) playList[currentSong].loop();
+     if (i == 0) {
+  println("Song Saved!");
+}
       else if (i == 1) playList[currentSong].skip(10000);
       else if (i == 2) playList[currentSong].skip(-10000);
 
       else if (i == 3) {
         if (playList[currentSong].isPlaying())
           playList[currentSong].pause();
-        else
-          playList[currentSong].play();
+       
       }
 
       else if (i == 4) playList[currentSong].play();
