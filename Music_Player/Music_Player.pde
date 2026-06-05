@@ -119,18 +119,46 @@ void setup() {
 
 void draw() {
 
-  background(255);
+  background(0);
 
-  stroke(0);
-  strokeWeight(2);
-  noFill();
-  textAlign(CENTER, CENTER);
+stroke(255);
+strokeWeight(2);
+noFill();
+textAlign(CENTER, CENTER);
 
   // EXIT
   rect(exitBtnX, exitBtnY, exitBtnW, exitBtnH);
-  fill(0);
+  fill(255);
   text("X", exitBtnX + exitBtnW/2, exitBtnY + exitBtnH/2);
   noFill();
+  // EXIT
+
+boolean exitHover =
+  mouseX > exitBtnX &&
+  mouseX < exitBtnX + exitBtnW &&
+  mouseY > exitBtnY &&
+  mouseY < exitBtnY + exitBtnH;
+
+if (exitHover) {
+
+  fill(255);
+  stroke(255);
+  rect(exitBtnX, exitBtnY, exitBtnW, exitBtnH);
+
+  fill(0);
+}
+else {
+
+  noFill();
+  stroke(255);
+  rect(exitBtnX, exitBtnY, exitBtnW, exitBtnH);
+
+  fill(255);
+}
+
+text("X", exitBtnX + exitBtnW/2, exitBtnY + exitBtnH/2);
+
+fill(0); // reset text color
 
   // IMAGE
   rect(photoX, photoY, photoW, photoH);
@@ -157,6 +185,24 @@ void draw() {
   }
 
   // PROGRESS BAR
+stroke(255);
+noFill();
+rect(progressX, progressY, progressW, progressH);
+
+if (playList[currentSong] != null) {
+
+  float p = map(
+    playList[currentSong].position(),
+    0,
+    playList[currentSong].length(),
+    0,
+    progressW
+  );
+
+  fill(255);
+  rect(progressX, progressY, p, progressH);
+  noFill();
+}
   rect(progressX, progressY, progressW, progressH);
 
   if (playList[currentSong] != null) {
@@ -171,69 +217,48 @@ void draw() {
   // ICON BUTTONS (FIXED - NO BLACK BOXES)
   // =======================================================
 
-  for (int i = 0; i < 9; i++) {
+  // LOOP
+  
+ for (int i = 0; i < 9; i++) {
 
-    float x = btnBaseX + i * btnW;
+  float x = btnBaseX + i * btnW;
 
+  boolean hover =
+    mouseX > x &&
+    mouseX < x + btnW &&
+    mouseY > btnBaseY &&
+    mouseY < btnBaseY + btnH;
+
+  if (hover) {
+    fill(255);      // white button
+    stroke(255);
     rect(x, btnBaseY, btnW, btnH);
 
-    float cx = x + btnW/2;
-    float cy = btnBaseY + btnH/2;
-
-    stroke(0);
-    strokeWeight(2);
-    fill(0);
-
-    if (i == 0) {
-      noFill();
-      arc(cx, cy, btnW*0.5, btnW*0.5, PI/4, TWO_PI);
-      line(cx + 10, cy - 5, cx + 15, cy - 10);
-    }
-
-    else if (i == 1) {
-      line(cx - 10, cy, cx + 10, cy);
-      line(cx, cy - 10, cx, cy + 10);
-      rect(cx + 8, cy - 10, 3, 20);
-    }
-
-    else if (i == 2) {
-      line(cx - 10, cy, cx + 10, cy);
-      rect(cx - 11, cy - 10, 3, 20);
-    }
-
-    else if (i == 3) {
-      rect(cx - 8, cy - 10, 5, 20);
-      rect(cx + 3, cy - 10, 5, 20);
-    }
-
-    else if (i == 4) {
-      triangle(cx - 8, cy - 10, cx - 8, cy + 10, cx + 12, cy);
-    }
-
-    else if (i == 5) {
-      rect(cx - 10, cy - 10, 20, 20);
-    }
-
-    else if (i == 6) {
-      triangle(cx - 12, cy - 10, cx - 12, cy + 10, cx + 2, cy);
-      rect(cx + 6, cy - 10, 3, 20);
-    }
-
-    else if (i == 7) {
-      triangle(cx + 12, cy - 10, cx + 12, cy + 10, cx - 2, cy);
-      rect(cx - 9, cy - 10, 3, 20);
-    }
-
-    else if (i == 8) {
-      beginShape();
-      vertex(cx, cy + 8);
-      bezierVertex(cx - 10, cy - 5, cx - 8, cy - 12, cx, cy - 3);
-      bezierVertex(cx + 8, cy - 12, cx + 10, cy - 5, cx, cy + 8);
-      endShape(CLOSE);
-    }
+    fill(0);        // black text
   }
-}
+  else {
+    noFill();       // black background shows through
+    stroke(255);
+    rect(x, btnBaseY, btnW, btnH);
 
+    fill(255);      // white text
+  }
+
+  textSize(32);
+  if (i == 0) text("loop", x+btnW/2, btnBaseY+btnH/2);
+  else if (i == 1) text("<<", x+btnW/2, btnBaseY+btnH/2);
+  else if (i == 2) text(">>", x+btnW/2, btnBaseY+btnH/2);
+  else if (i == 3) text("||", x+btnW/2, btnBaseY+btnH/2);
+  else if (i == 4) text(">", x+btnW/2, btnBaseY+btnH/2);
+  else if (i == 5) text("[]", x+btnW/2, btnBaseY+btnH/2);
+  else if (i == 6) text("|<", x+btnW/2, btnBaseY+btnH/2);
+  else if (i == 7) text(">|", x+btnW/2, btnBaseY+btnH/2);
+  else if (i == 8) text("<3", x+btnW/2, btnBaseY+btnH/2);
+
+  noFill();
+}
+  
+}
 // =======================================================
 // MOUSE CONTROLS
 // =======================================================
@@ -307,5 +332,5 @@ void stop() {
     if (playList[i] != null) playList[i].close();
   }
   minim.stop();
-  super.stop();
+
 }
