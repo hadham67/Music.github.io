@@ -1,11 +1,12 @@
-
-/* Music App, Final Project */
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
 import ddf.minim.signals.*;
 import ddf.minim.spi.*;
 import ddf.minim.ugens.*;
+
+
+
 
 // =======================================================
 // GLOBAL VARIABLES
@@ -29,6 +30,8 @@ int currentSong = 0;
 
 // IMAGE
 PImage image1;
+PImage image2;
+PImage image3;
 
 // UI ELEMENTS
 float exitBtnX, exitBtnY, exitBtnW, exitBtnH;
@@ -103,16 +106,18 @@ void setup() {
     }
   }
 
-  soundEffects[0] = minim.loadFile("Car_Door_Closing.mp3");
+
 
   if (playList[currentSong] != null) {
     playList[currentSong].play();
   }
 
-  // IMAGE
-  image1 = loadImage("weeknd.jpg");
-}
 
+ // IMAGE
+image1 = loadImage("weeknd.jpg");
+image2 = loadImage("headline.jpg");
+image3 = loadImage("highest in the room.jpg");
+}
 // =======================================================
 // DRAW
 // =======================================================
@@ -161,10 +166,17 @@ text("X", exitBtnX + exitBtnW/2, exitBtnY + exitBtnH/2);
 fill(0); // reset text color
 
   // IMAGE
-  rect(photoX, photoY, photoW, photoH);
-  if (image1 != null) {
-    image(image1, photoX, photoY, photoW, photoH);
-  }
+rect(photoX, photoY, photoW, photoH);
+
+if (currentSong == 0 && image1 != null) {
+  image(image1, photoX, photoY, photoW, photoH);
+}
+else if (currentSong == 1 && image2 != null) {
+  image(image2, photoX, photoY, photoW, photoH);
+}
+else if (currentSong == 2 && image3 != null) {
+  image(image3, photoX, photoY, photoW, photoH);
+}
 
   // LYRICS
  rect(lyricsX, lyricsY, lyricsW, lyricsH);
