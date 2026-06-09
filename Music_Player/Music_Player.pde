@@ -22,6 +22,18 @@ Minim minim;
 int numberOfSongs = 3;
 int numberOfSoundEffect = 1;
 
+String[] songTitles = {
+  "Party Monster",
+  "Headlines",
+  "Highest In The Room"
+};
+
+String[] songArtists = {
+  "The Weeknd",
+  "Drake",
+  "Travis Scott"
+};
+
 AudioPlayer[] playList = new AudioPlayer[numberOfSongs];
 AudioMetaData[] playListMetaData = new AudioMetaData[numberOfSongs];
 AudioPlayer[] soundEffects = new AudioPlayer[numberOfSoundEffect];
@@ -111,12 +123,10 @@ void setup() {
   if (playList[currentSong] != null) {
     playList[currentSong].play();
   }
-
-
- // IMAGE
 image1 = loadImage("weeknd.jpg");
-image2 = loadImage("headline.jpg");
+image2 = loadImage("headlines.jpg");
 image3 = loadImage("highest in the room.jpg");
+
 }
 // =======================================================
 // DRAW
@@ -165,7 +175,8 @@ text("X", exitBtnX + exitBtnW/2, exitBtnY + exitBtnH/2);
 
 fill(0); // reset text color
 
-  // IMAGE
+ 
+// IMAGE
 rect(photoX, photoY, photoW, photoH);
 
 if (currentSong == 0 && image1 != null) {
@@ -178,6 +189,7 @@ else if (currentSong == 2 && image3 != null) {
   image(image3, photoX, photoY, photoW, photoH);
 }
 
+// LYRICS
   // LYRICS
  rect(lyricsX, lyricsY, lyricsW, lyricsH);
 fill(255);
@@ -189,22 +201,21 @@ stroke(255);
 rect(titleX, titleY, titleW, titleH);
 
 fill(255);
-if (playListMetaData[currentSong] != null) {
-  text(playListMetaData[currentSong].title(),
-       titleX + titleW/2,
-       titleY + titleH/2);
-}
+text(songTitles[currentSong],
+     titleX + titleW/2,
+     titleY + titleH/2);
+
+
+
 // WRITER
 noFill();
 stroke(255);
 rect(writerX, writerY, writerW, writerH);
 
 fill(255);
-if (playListMetaData[currentSong] != null) {
-  text(playListMetaData[currentSong].author(),
-       writerX + writerW/2,
-       writerY + writerH/2);
-}
+text(songArtists[currentSong],
+     writerX + writerW/2,
+     writerY + writerH/2);
   // PROGRESS BAR
 stroke(255);
 noFill();
