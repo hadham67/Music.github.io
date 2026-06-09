@@ -223,6 +223,7 @@ rect(progressX, progressY, progressW, progressH);
 
 if (playList[currentSong] != null) {
 
+// I used Processing's map() function to convert the song's current playback position from milliseconds into a pixel width for the progress bar. As the song plays, the position increases, and map() scales that value to the width of the progress bar so the bar fills up proportionally to the song's progress
   float p = map(
     playList[currentSong].position(),
     0,
@@ -356,16 +357,4 @@ void mousePressed() {
       }
     }
   }
-}
-
-// =======================================================
-// STOP
-// =======================================================
-
-void stop() {
-  for (int i = 0; i < numberOfSongs; i++) {
-    if (playList[i] != null) playList[i].close();
-  }
-  minim.stop();
-
 }
